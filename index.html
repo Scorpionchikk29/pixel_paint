@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Пиксельный Конвертер PRO</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <h1>Пиксельный конвертер изображений</h1>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="imageLoader">1. Выберите файл:</label>
+                <input type="file" id="imageLoader" accept="image/*" />
+            </div>
+            <div class="control-group">
+                <label for="complexity">2. Разрешение сетки:</label>
+                <select id="complexity">
+                    <option value="64">64 x 64</option>
+                    <option value="128">128 x 128</option>
+                    <option value="256">256 x 256</option>
+                    <option value="512">512 x 512</option>
+                    <option value="1024" selected>1024 x 1024 (Макс)</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label for="colorCount">3. Количество цветов:</label>
+                <select id="colorCount">
+                    <option value="8">8 цветов</option>
+                    <option value="16">16 цветов</option>
+                    <option value="24">24 цвета</option>
+                    <option value="32" selected>32 цвета (Макс)</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Модальное окно кадрирования (выбор ракурса) -->
+        <div id="cropModal" class="modal">
+            <div class="modal-content">
+                <h3>Настройка ракурса (Обрезать изображение)</h3>
+                <p>
+                    Перетаскивайте рамку или меняйте её размер за правый нижний
+                    угол.
+                </p>
+                <div class="crop-area-wrapper">
+                    <canvas id="cropCanvas"></canvas>
+                    <div id="cropFrame"></div>
+                </div>
+                <div class="modal-buttons">
+                    <button id="cancelCropBtn" class="btn btn-secondary">
+                        Отмена
+                    </button>
+                    <button id="confirmCropBtn" class="btn btn-primary">
+                        Пикселизировать
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Область предпросмотра результата -->
+        <div id="preview-container" class="hidden">
+            <div id="palette-wrapper">
+                <h3>Сгенерированная палитра:</h3>
+                <div id="palette"></div>
+            </div>
+            <div id="canvas-wrapper">
+                <h3>Результат:</h3>
+                <canvas id="resultCanvas"></canvas>
+            </div>
+        </div>
+
+        <script src="app.js"></script>
+    </body>
+</html>
