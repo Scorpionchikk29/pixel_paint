@@ -18,10 +18,8 @@
                 <label for="complexity">2. Разрешение сетки:</label>
                 <select id="complexity">
                     <option value="64">64 x 64</option>
-                    <option value="128">128 x 128</option>
+                    <option value="128" selected>128 x 128</option>
                     <option value="256">256 x 256</option>
-                    <option value="512">512 x 512</option>
-                    <option value="1024" selected>1024 x 1024 (Макс)</option>
                 </select>
             </div>
             <div class="control-group">
@@ -32,6 +30,15 @@
                     <option value="24">24 цвета</option>
                     <option value="32" selected>32 цвета (Макс)</option>
                 </select>
+            </div>
+            <div class="control-group" style="justify-content: flex-end">
+                <button
+                    id="directLoadJsonBtn"
+                    class="btn btn-secondary"
+                    style="background: #3b82f6; color: white; padding: 8px 15px"
+                >
+                    📂 Загрузить из .JSON
+                </button>
             </div>
         </div>
 
@@ -61,8 +68,56 @@
         <!-- Область предпросмотра результата -->
         <div id="preview-container" class="hidden">
             <div id="palette-wrapper">
-                <h3>Сгенерированная палитра:</h3>
+                <h3>Выберите цвет:</h3>
                 <div id="palette"></div>
+
+                <!-- Блок управления сохранением -->
+                <div
+                    class="save-controls"
+                    style="
+                        margin-top: 20px;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 8px;
+                    "
+                >
+                    <button
+                        id="saveProgressBtn"
+                        class="btn btn-primary"
+                        style="
+                            background: #10b981;
+                            font-size: 13px;
+                            padding: 8px;
+                        "
+                    >
+                        💾 Сохранить в файл
+                    </button>
+                    <button
+                        id="loadProgressBtn"
+                        class="btn btn-secondary"
+                        style="font-size: 13px; padding: 8px"
+                    >
+                        📂 Загрузить из файла
+                    </button>
+                    <button
+                        id="resetProgressBtn"
+                        class="btn btn-secondary"
+                        style="
+                            background: #ef4444;
+                            color: white;
+                            font-size: 13px;
+                            padding: 8px;
+                        "
+                    >
+                        🗑️ Сбросить раскраску
+                    </button>
+                    <input
+                        type="file"
+                        id="progressFileLoader"
+                        accept=".json"
+                        style="display: none"
+                    />
+                </div>
             </div>
             <div id="canvas-wrapper">
                 <h3>Результат:</h3>
