@@ -67,6 +67,50 @@
 
         <!-- Область предпросмотра результата -->
         <div id="preview-container" class="hidden">
+            <!-- Вертикальный прогресс-бар -->
+            <div
+                class="progress-vertical-container"
+                style="
+                    width: 24px;
+                    background: #e2e8f0;
+                    border-radius: 12px;
+                    position: relative;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-end;
+                    overflow: hidden;
+                    border: 1px solid #cbd5e1;
+                    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+                "
+            >
+                <div
+                    id="progressBarFill"
+                    style="
+                        width: 100%;
+                        height: 0%;
+                        background: linear-gradient(to top, #3b82f6, #10b981);
+                        transition: height 0.2s ease;
+                        position: relative;
+                    "
+                >
+                    <div
+                        id="progressText"
+                        style="
+                            position: absolute;
+                            width: 100px;
+                            left: 32px;
+                            bottom: 10px;
+                            font-weight: bold;
+                            color: #1e293b;
+                            font-size: 14px;
+                            white-space: nowrap;
+                            text-shadow: 1px 1px 0px white;
+                        "
+                    >
+                        0%
+                    </div>
+                </div>
+            </div>
             <div id="palette-wrapper">
                 <h3>Выберите цвет:</h3>
                 <div id="palette"></div>

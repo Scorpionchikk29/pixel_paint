@@ -157,6 +157,7 @@ function initGameUIFromSave() {
         initZoomAndPanEvents();
         updateTransform();
         drawCanvas();
+        updateProgressBar();
     }, 50);
 }
 
@@ -233,6 +234,7 @@ function resetCurrentProgress() {
         });
         autoSaveToLocalStorage();
         drawCanvas();
+        updateProgressBar();
     }
 }
 
@@ -438,6 +440,7 @@ function initGameUI() {
     updateTransform();
     previewContainer.classList.remove("hidden");
     drawCanvas();
+    updateProgressBar();
 }
 
 function renderPalette() {
@@ -597,6 +600,7 @@ function handleCanvasClick(e) {
                 pixelDisplaySize,
             );
             autoSaveToLocalStorage(); // Автосохранение при каждом закрашенном пикселе
+            updateProgressBar();
             checkWinState();
         }
     }
@@ -647,4 +651,35 @@ function saveCanvasAsPng() {
         console.error("Не удалось сохранить изображение в PNG:", error);
         alert("Произошла ошибка при генерации PNG файла.");
     }
+}
+
+function updateProgressBar() {
+    if (!pixelsMatrix || pixelsMatrix.length === 0) return;
+
+    // Считаем пиксели, которые требуют закрашивания (исключаем белый фон с индексом -1)
+    const totalPlayablePixels = pixelsMatrix.filter(
+        (p) => p.requiredColorIdx !== -1,
+    ).length;
+
+    if (totalPlayablePixels === 0) {
+        document.getElementById("progressBarFill").style.height = "100%";
+        document.getElementById("progressText").innerText = "100%";
+        return;
+    }
+
+    // Считаем, сколько из игровых пикселей уже закрашено
+    const coloredPlayablePixels = pixelsMatrix.filter(
+        (p) => p.requiredColorIdx !== -1 && p.isColored,
+    ).length;
+
+    // Вычисляем процент и округляем до десятых долей
+    const progressPercent = (
+        (coloredPlayablePixels / totalPlayablePixels) *
+        100
+    ).toFixed(1);
+
+    // Плавно заполняем бар снизу вверх и обновляем текст процента рядом
+    document.getElementById("progressBarFill").style.height =
+        `${progressPercent}%`;
+    document.getElementById("progressText").innerText = `${progressPercent}%`;
 }
