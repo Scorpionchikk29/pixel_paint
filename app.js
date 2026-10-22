@@ -158,6 +158,7 @@ function initGameUIFromSave() {
         updateTransform();
         drawCanvas();
         updateProgressBar();
+        renderPalette();
     }, 50);
 }
 
@@ -235,6 +236,7 @@ function resetCurrentProgress() {
         autoSaveToLocalStorage();
         drawCanvas();
         updateProgressBar();
+        renderPalette();
     }
 }
 
@@ -441,6 +443,7 @@ function initGameUI() {
     previewContainer.classList.remove("hidden");
     drawCanvas();
     updateProgressBar();
+    renderPalette();
 }
 
 function renderPalette() {
@@ -599,8 +602,16 @@ function handleCanvasClick(e) {
                 pixelDisplaySize,
                 pixelDisplaySize,
             );
-            autoSaveToLocalStorage(); // Автосохранение при каждом закрашенном пикселе
+            autoSaveToLocalStorage();
             updateProgressBar();
+            const isCurrentColorFinished = !pixelsMatrix.some(
+                (pixel) =>
+                    pixel.requiredColorIdx === selectedColorIndex &&
+                    !pixel.isColored,
+            );
+            if (isCurrentColorFinished) {
+                renderPalette();
+            }
             checkWinState();
         }
     }
@@ -682,4 +693,42 @@ function updateProgressBar() {
     document.getElementById("progressBarFill").style.height =
         `${progressPercent}%`;
     document.getElementById("progressText").innerText = `${progressPercent}%`;
+}
+
+function renderPalette() {
+    paletteContainer.innerHTML = "";
+
+    colorPalette.forEach((color, index) => {
+        const item = document.createElement("div");
+        item.className = `color-item ${index === selectedColorIndex ? "selected" : ""}`;
+        item.style.backgroundColor = color;
+
+        // Проверяем, остались ли на всём поле НЕзакрашенные пиксели с этим индексом цвета
+        const isColorFinished = !pixelsMatrix.some(
+            (p) => p.requiredColorIdx === index && !p.isColored,
+        );
+
+        // Если цвет полностью завершён — рисуем галочку, иначе — стандартный порядковый номер
+        item.innerText = isColorFinished ? "✓" : index + 1;
+
+        // Немного стилизуем галочку для наглядности (делаем её крупнее и жирнее)
+        if (isColorFinished) {
+            item.style.fontSize = "16px";
+            item.style.fontWeight = "900";
+        } else {
+            item.style.fontSize = "12px";
+            item.style.fontWeight = "bold";
+        }
+
+        item.onclick = () => {
+            document
+                .querySelectorAll(".color-item")
+                .forEach((el) => el.classList.remove("selected"));
+            item.classList.add("selected");
+            selectedColorIndex = index;
+            drawCanvas(); // Перерисовываем холст для обновления серой подсветки
+        };
+
+        paletteContainer.appendChild(item);
+    });
 }
