@@ -615,3 +615,36 @@ function checkWinState() {
         );
     }
 }
+
+// Находим кнопку в DOM (добавьте к объявлению переменных в начале файла)
+const exportPngBtn = document.getElementById("exportPngBtn");
+
+// Привязываем событие (добавьте к списку слушателей событий)
+exportPngBtn.addEventListener("click", saveCanvasAsPng);
+
+// Функция сохранения холста в формате PNG (вставьте в блок функций сохранения)
+function saveCanvasAsPng() {
+    // Проверяем, запущена ли игра и есть ли данные на холсте
+    if (!pixelsMatrix || pixelsMatrix.length === 0) {
+        alert(
+            "Ошибка: Холст пуст. Сначала загрузите изображение или сохранение!",
+        );
+        return;
+    }
+
+    try {
+        // Получаем DataURL из игрового Canvas
+        const dataUrl = resultCanvas.toDataURL("image/png");
+
+        // Создаем виртуальную ссылку для скачивания файла
+        const link = document.createElement("a");
+        link.download = `pixel-art-result-${gridWidth}x${gridHeight}.png`;
+        link.href = dataUrl;
+
+        // Эмулируем клик для скачивания
+        link.click();
+    } catch (error) {
+        console.error("Не удалось сохранить изображение в PNG:", error);
+        alert("Произошла ошибка при генерации PNG файла.");
+    }
+}
